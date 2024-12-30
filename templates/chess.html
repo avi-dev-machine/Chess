@@ -149,26 +149,32 @@
             max-height: 200px;
             overflow-y: auto;
         }
+          .selected {
+              background-color: rgba(255, 255, 0, 0.5) !important;
+          }
 
-        .piece {
-            cursor: pointer;
-            user-select: none;
-        }
+          .legal-move {
+              position: relative;
+          }
 
-        .piece:hover {
-            transform: scale(1.1);
-            transition: transform 0.2s;
-        }
+          .legal-move::after {
+              content: '';
+              position: absolute;
+              width: 20px;
+              height: 20px;
+              background-color: rgba(0, 255, 0, 0.3);
+              border-radius: 50%;
+          }
 
-        .move-hint {
-            background: rgba(255, 255, 0, 0.3);
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            border-radius: 50%;
-            pointer-events: none;
-        }
+          .piece {
+              cursor: pointer;
+              user-select: none;
+          }
 
+          .piece:hover {
+              transform: scale(1.1);
+              transition: transform 0.2s;
+          }
         .last-move {
             background: rgba(255, 255, 0, 0.2);
         }
@@ -230,6 +236,48 @@
     </div>
 
     <script>
+
+// Add this inside your existing script tag
+let selectedSquare = null;
+
+$(document).on('click', '.square', function() {
+    const square = $(this).attr('data-square');
+    
+    if (selectedSquare === null) {
+        // First click - select piece
+        if ($(this).find('.piece.white').length) {
+            selectedSquare = square;
+            $(this).addClass('selected');
+            highlightLegalMoves(square);
+        }
+    } else {
+        // Second click - make move
+        const move = selectedSquare + square;
+        $.get(`/move/${move}`, function(data) {
+            if (data.status === 'success') {
+                updateBoard(data);
+                moveHistory.push(move);
+                updateMoveHistory();
+            }
+        });
+        
+        // Reset selection
+        $('.square').removeClass('selected');
+        $('.square').removeClass('legal-move');
+        selectedSquare = null;
+    }
+});
+
+function highlightLegalMoves(fromSquare) {
+    $.get('/legal_moves', function(data) {
+        data.moves.forEach(move => {
+            if (move.startsWith(fromSquare)) {
+                $(`.square[data-square="${move.substring(2,4)}"]`).addClass('legal-move');
+            }
+        });
+    });
+}
+
         let moveHistory = [];
 
         function makeMove() {
