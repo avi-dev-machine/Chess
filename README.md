@@ -16,7 +16,7 @@ A web-based chess game where you can play against the **Stockfish** chess engine
 First, clone the repository to your local machine:
 
 
-git clone https://github.com/yourusername/chess-vs-computer.git
+git clone https://github.com/avi-dev-machine/Chess.git
 cd chess-vs-computer
 2. Install Requirements
 Make sure you have Python installed. Then, install the required dependencies:
