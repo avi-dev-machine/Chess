@@ -15,13 +15,13 @@ A web-based chess game where you can play against the **Stockfish** chess engine
 ### 1. Clone the Repository
 First, clone the repository to your local machine:
 
-```bash
+
 git clone https://github.com/yourusername/chess-vs-computer.git
 cd chess-vs-computer
 2. Install Requirements
 Make sure you have Python installed. Then, install the required dependencies:
 
-```bash
+
 pip install flask python-chess
 3. Download Stockfish
 Download the Stockfish engine from Stockfish Chess Download.
